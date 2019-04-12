@@ -1,0 +1,13 @@
+git pull origin demo(目标分支)
+git add index.php    添加到缓存库
+git commit -m "说明" 提交到本地分支
+git status	
+git push origin x_demo（远程分支）
+
+git上合并分支(把远程x_demo合并到demo)
+
+
+git branch -b xxx  (新家分支)
+
+git checkour x_uat xxx   从其他分支拉去改动文件
+
