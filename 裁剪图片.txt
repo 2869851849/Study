@@ -1,0 +1,50 @@
+public function caiimg(){
+		$image = new \Think\Image();
+		$res = D('award')->order('aid desc')->select();
+		
+		foreach ($res as $key => $val){
+			
+			$val['pic'] = pic_path_process($val['pic'], AwardLogic::$FilePath);
+			dump($val);
+			exit;
+			if (!empty($val['pic'])){
+				// 图片路径
+				$path = explode("award/", $val['pic']);
+				$path = $path[0] . "award/";
+				$imgRes['path'] = $path;
+
+				// 图片名
+				$imgName = explode(".", $val['pic']);
+				$imgType = $imgName[1];
+				$imgName = explode("award/", $imgName[0]);
+
+				$imgName = $imgName[1];
+				
+				$imgRes['imgName'] = $imgName;
+
+
+				// 处理封面图片
+				$image->open("." . $val['pic']);
+				$imgRes['width'] = $image->width(); // 返回图片的宽度
+				$imgRes['height'] = $image->height(); // 返回图片的高度
+				$imgRes['type'] = $image->type(); // 返回图片的类型
+				$imgRes['mine'] = $image->mime(); // 返回图片的mime类型
+				$imgRes['size'] = $image->size(); // 返回图片的尺寸数组 0 图片宽度 1 图片高度
+				// 裁剪成正文形图片
+				if ($imgRes['width'] != $imgRes['height'])
+				{
+					if ($imgRes['width'] > $imgRes['height'])
+					{
+						$zuo = ($imgRes['width'] - $imgRes['height'])/2;
+						$image->crop($imgRes['height'], $imgRes['height'], $zuo, 0)->save("." . $path . $imgName . "." . $imgType);
+					}
+					else
+					{
+						$zuo = ($imgRes['height'] - $imgRes['width'])/2;
+						$image->crop($imgRes['width'], $imgRes['width'], 0, $zuo)->save("." . $path . $imgName . "." . $imgType);
+					}
+				}
+			}
+			exit;
+		}
+	}
