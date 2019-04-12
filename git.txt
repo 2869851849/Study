@@ -11,3 +11,5 @@ git branch -b xxx  (新家分支)
 
 git checkour x_uat xxx   从其他分支拉去改动文件
 
+
+git rset 版本回退
